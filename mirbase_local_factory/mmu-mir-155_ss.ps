@@ -1,0 +1,193 @@
+%!PS-Adobe-3.0 EPSF-3.0
+%%Creator: PS_dot.c,v 1.38 2007/02/02 15:18:13 ivo Exp $, ViennaRNA-1.8.3
+%%CreationDate: Tue Jun 10 17:21:39 2014
+%%Title: RNA Secondary Structure Plot
+%%BoundingBox: 66 210 518 662
+%%DocumentFonts: Helvetica
+%%Pages: 1
+%%EndComments
+
+%Options: 
+% to switch off outline pairs of sequence comment or
+% delete the appropriate line near the end of the file
+
+%%BeginProlog
+/RNAplot 100 dict def
+RNAplot begin
+/fsize  14 def
+/outlinecolor {0.2 setgray} bind def
+/paircolor    {0.2 setgray} bind def
+/seqcolor     {0   setgray} bind def
+/cshow  { dup stringwidth pop -2 div fsize -3 div rmoveto show} bind def
+/min { 2 copy gt { exch } if pop } bind def
+/max { 2 copy lt { exch } if pop } bind def
+/drawoutline {
+  gsave outlinecolor newpath
+  coor 0 get aload pop 0.8 0 360 arc % draw 5' circle of 1st sequence
+  currentdict /cutpoint known        % check if cutpoint is defined
+  {coor 0 cutpoint getinterval
+   {aload pop lineto} forall         % draw outline of 1st sequence
+   coor cutpoint get aload pop
+   2 copy moveto 0.8 0 360 arc       % draw 5' circle of 2nd sequence
+   coor cutpoint coor length cutpoint sub getinterval
+   {aload pop lineto} forall}        % draw outline of 2nd sequence
+  {coor {aload pop lineto} forall}   % draw outline as a whole
+  ifelse
+  stroke grestore
+} bind def
+/drawpairs {
+  paircolor
+  0.7 setlinewidth
+  [9 3.01] 9 setdash
+  newpath
+  pairs {aload pop
+     coor exch 1 sub get aload pop moveto
+     coor exch 1 sub get aload pop lineto
+  } forall
+  stroke
+} bind def
+% draw bases
+/drawbases {
+  [] 0 setdash
+  seqcolor
+  0
+  coor {
+    aload pop moveto
+    dup sequence exch 1 getinterval cshow
+    1 add
+  } forall
+  pop
+} bind def
+
+/init {
+  /Helvetica findfont fsize scalefont setfont
+  1 setlinejoin
+  1 setlinecap
+  0.8 setlinewidth
+  72 216 translate
+  % find the coordinate range
+  /xmax -1000 def /xmin 10000 def
+  /ymax -1000 def /ymin 10000 def
+  coor {
+      aload pop
+      dup ymin lt {dup /ymin exch def} if
+      dup ymax gt {/ymax exch def} {pop} ifelse
+      dup xmin lt {dup /xmin exch def} if
+      dup xmax gt {/xmax exch def} {pop} ifelse
+  } forall
+  /size {xmax xmin sub ymax ymin sub max} bind def
+  72 6 mul size div dup scale
+  size xmin sub xmax sub 2 div size ymin sub ymax sub 2 div
+  translate
+} bind def
+end
+%%EndProlog
+RNAplot begin
+% data start here
+/sequence (\
+CUGUUAAUGCUAAUUGUGAUAGGGGUUUUGGCCUCUGACUGACUCCUACCUGUUAGCAUUAACAG\
+) def
+/coor [
+[89.648 341.015]
+[89.648 326.015]
+[89.648 311.015]
+[89.648 296.015]
+[89.648 281.015]
+[89.648 266.015]
+[89.648 251.015]
+[89.648 236.015]
+[89.648 221.015]
+[89.648 206.015]
+[89.648 191.015]
+[89.648 176.015]
+[89.648 161.015]
+[89.648 146.015]
+[81.508 139.141]
+[78.628 128.652]
+[82.262 118.162]
+[91.374 111.435]
+[85.741 98.638]
+[93.694 87.139]
+[95.120 72.207]
+[96.546 57.275]
+[97.971 42.343]
+[99.397 27.411]
+[100.823 12.478]
+[102.249 -2.454]
+[103.675 -17.386]
+[95.983 -28.027]
+[97.702 -40.636]
+[107.330 -48.322]
+[96.109 -59.039]
+[93.363 -74.311]
+[100.149 -88.266]
+[113.857 -95.537]
+[129.216 -93.329]
+[140.321 -82.490]
+[142.900 -67.189]
+[135.963 -53.309]
+[122.177 -46.187]
+[129.653 -30.482]
+[118.607 -15.960]
+[117.181 -1.028]
+[115.755 13.904]
+[114.329 28.836]
+[112.904 43.768]
+[111.478 58.701]
+[110.052 73.633]
+[108.626 88.565]
+[114.259 101.362]
+[106.306 112.861]
+[115.699 130.418]
+[104.648 146.015]
+[104.648 161.015]
+[104.648 176.015]
+[104.648 191.015]
+[104.648 206.015]
+[104.648 221.015]
+[104.648 236.015]
+[104.648 251.015]
+[104.648 266.015]
+[104.648 281.015]
+[104.648 296.015]
+[104.648 311.015]
+[104.648 326.015]
+[104.648 341.015]
+] def
+/pairs [
+[1 65]
+[2 64]
+[3 63]
+[4 62]
+[5 61]
+[6 60]
+[7 59]
+[8 58]
+[9 57]
+[10 56]
+[11 55]
+[12 54]
+[13 53]
+[14 52]
+[18 50]
+[20 48]
+[21 47]
+[22 46]
+[23 45]
+[24 44]
+[25 43]
+[26 42]
+[27 41]
+[30 39]
+] def
+
+init
+
+% switch off outline pairs or bases by removing these lines
+drawoutline
+drawpairs
+drawbases
+% show it
+showpage
+end
+%%EOF

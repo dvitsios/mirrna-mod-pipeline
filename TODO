@@ -1,0 +1,54 @@
+#1 STATUS:[DONE]
+- Complete the content of the test input datasets (testdata3p/5p/3p5p.fa.gz) and run them through the pipeline (check 'testdata_annotated.fa.gz' file for descriptions of the files content).  [DONE]
+- Verify that the pipeline works correctly by checking manually the output file (processed.counts).											       [DONE]
+- As soon as the input datasets have been finalised, I should keep the output (processed.counts) for each of the input datasets separately so that I can compare the output
+of the mirmod_pipeline whenever I make a change with the ones that I have kept from the previous stable version of the pipeline.							       [DONE]
+#! Maybe: fiddle a bit with BLAST parameters, so that mods assigned as nont_3p/5p while they are internal to be aligned with the whole sequence if possible. However, the current implementation gives already all the information that I need in order to do my analysis later in R (it will involve aligning the mod pattern with the corresponding part of the hairpin in order to take out the common parts and keep only the modifications!). 
+
+#2 STATUS: [DONE] for the miRNAs with no arm info. Now extracting these miRNAs in the 'new2arms.counts' file.
+# Have to talk with Anton about the case of miRNAs with arm info: 'mirs_with_2_arms_AND_arm_info.fa.gz.alignments.html'
+# Probably I won't need to do anything for that case. If there is no clear separation of two arms, then I can just 
+# consider the 'redundant' stretches as modifications. In any case, I will keep only a substring of those stretches,
+# e.g. 4-5nt and it won't affect the overall profile of all the modifications. Actually, this part of the stretches
+# should probably be considered as part of the modifications anyway.
+- Test the miRNAs (with or with no arm information in their id) that yield two arms in the final histo-mod profile.
+- For some of them, this might be the proof that these miRNA products (from the opposite arm) actually exist.
+- Investigate more for the ones that have arm info in their id too. 
+- Report in the end in a file all the potential new (new2arms.counts) miRNAs of the opposite arm with the other arm product and their read depths too.
+# !!!
+# When I aligned PRJNA190003 against the human genome I got 5 (human) miRNA hits in the mouse sample that corresponded to non-annotated miRNA arm products.
+# When aligned against the mouse genome it only gave one miRNA with two arms, one non annotated yet.
+
+
+#3 STATUS: have to talk with Anton about the html file in '/html_profiles_for_further_check':
+'non_actual_mir_candidates.fa.gz.alignments.html'.
+- Test the miRNAs that are strong candidates to be non actual miRNAs (based on their final histo-mod profile).
+- Play with some parameters in order to extract these (and only these) miRNAs automatically from my code
+as potential non actual miRNAs
+- Report the potential non actual miRNAs in a separate file with their read depths (non_actual_mirs.counts).
+
+#4
+Test the mirmod pipeline for a whole dataset (PRJNA190003)
+
+#5
+Run the mirmod pipeline through the seqimp_pipeline for a small dataset with one first (PRJNA190003) more than one files afterwards.
+I have to modify the seqimp_pipeline so that it deals (e.g. merging) with the new.counts and non_actual_mirs.counts as well.
+
+#6
+Run through the seqimp_pipeline all my datasets: actually see how I can run some datasets only through the mirmod_pipeline!
+So...'REFACTORING' is required here to make my workflow completely modular!!
+
+#6.5 (I will keep them for the moment) [DONE]
+-> filter out the mods that have very negative indexes e.g. nont_3p_UU_-21
+from the miRNAs with two arms, one of which is not annotated in mirbase.
+For the moment I won't report the modifications from these reads, since they are not recognized as real mirs by everyone.
+But at a later version of the mirmod_pipeline I should probably be giving the chance to the user to include these counts
+in his analysis if he wants to.
+
+#7
+In order to extract all types of info that I want from each of the datasets I will first run them through my R analysis scripts,
+will create the appropriate files, and then I will be able to feed these files in some Perl scripts in order to populate a database
+of global miRNA expression data (DESING of db schema is required here!). [DONE!!!]
+
+#8
+Markov chain based modification significance values

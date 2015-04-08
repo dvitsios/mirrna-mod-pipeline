@@ -1,0 +1,190 @@
+%!PS-Adobe-3.0 EPSF-3.0
+%%Creator: PS_dot.c,v 1.38 2007/02/02 15:18:13 ivo Exp $, ViennaRNA-1.8.3
+%%CreationDate: Tue Jun 10 17:21:52 2014
+%%Title: RNA Secondary Structure Plot
+%%BoundingBox: 66 210 518 662
+%%DocumentFonts: Helvetica
+%%Pages: 1
+%%EndComments
+
+%Options: 
+% to switch off outline pairs of sequence comment or
+% delete the appropriate line near the end of the file
+
+%%BeginProlog
+/RNAplot 100 dict def
+RNAplot begin
+/fsize  14 def
+/outlinecolor {0.2 setgray} bind def
+/paircolor    {0.2 setgray} bind def
+/seqcolor     {0   setgray} bind def
+/cshow  { dup stringwidth pop -2 div fsize -3 div rmoveto show} bind def
+/min { 2 copy gt { exch } if pop } bind def
+/max { 2 copy lt { exch } if pop } bind def
+/drawoutline {
+  gsave outlinecolor newpath
+  coor 0 get aload pop 0.8 0 360 arc % draw 5' circle of 1st sequence
+  currentdict /cutpoint known        % check if cutpoint is defined
+  {coor 0 cutpoint getinterval
+   {aload pop lineto} forall         % draw outline of 1st sequence
+   coor cutpoint get aload pop
+   2 copy moveto 0.8 0 360 arc       % draw 5' circle of 2nd sequence
+   coor cutpoint coor length cutpoint sub getinterval
+   {aload pop lineto} forall}        % draw outline of 2nd sequence
+  {coor {aload pop lineto} forall}   % draw outline as a whole
+  ifelse
+  stroke grestore
+} bind def
+/drawpairs {
+  paircolor
+  0.7 setlinewidth
+  [9 3.01] 9 setdash
+  newpath
+  pairs {aload pop
+     coor exch 1 sub get aload pop moveto
+     coor exch 1 sub get aload pop lineto
+  } forall
+  stroke
+} bind def
+% draw bases
+/drawbases {
+  [] 0 setdash
+  seqcolor
+  0
+  coor {
+    aload pop moveto
+    dup sequence exch 1 getinterval cshow
+    1 add
+  } forall
+  pop
+} bind def
+
+/init {
+  /Helvetica findfont fsize scalefont setfont
+  1 setlinejoin
+  1 setlinecap
+  0.8 setlinewidth
+  72 216 translate
+  % find the coordinate range
+  /xmax -1000 def /xmin 10000 def
+  /ymax -1000 def /ymin 10000 def
+  coor {
+      aload pop
+      dup ymin lt {dup /ymin exch def} if
+      dup ymax gt {/ymax exch def} {pop} ifelse
+      dup xmin lt {dup /xmin exch def} if
+      dup xmax gt {/xmax exch def} {pop} ifelse
+  } forall
+  /size {xmax xmin sub ymax ymin sub max} bind def
+  72 6 mul size div dup scale
+  size xmin sub xmax sub 2 div size ymin sub ymax sub 2 div
+  translate
+} bind def
+end
+%%EndProlog
+RNAplot begin
+% data start here
+/sequence (\
+UCGGGAAGGUGGCCACAGGAGAUCAUGGUGGCUCCUUACCACCUGUCUCCUAAUGUCACCUGCAG\
+) def
+/coor [
+[82.563 282.605]
+[68.455 275.860]
+[62.029 261.604]
+[66.321 246.567]
+[79.303 237.849]
+[72.810 224.444]
+[81.825 211.441]
+[83.250 196.509]
+[84.676 181.577]
+[86.102 166.645]
+[87.528 151.713]
+[88.954 136.781]
+[90.380 121.849]
+[79.407 112.077]
+[76.235 97.731]
+[82.065 84.244]
+[94.688 76.725]
+[96.114 61.793]
+[97.540 46.861]
+[98.966 31.929]
+[100.392 16.997]
+[101.818 2.065]
+[99.463 -7.141]
+[103.683 -13.538]
+[105.818 -28.385]
+[103.904 -37.693]
+[108.424 -43.882]
+[111.262 -58.611]
+[114.101 -73.340]
+[116.940 -88.069]
+[119.779 -102.797]
+[109.779 -114.820]
+[109.898 -130.457]
+[120.079 -142.325]
+[135.516 -144.822]
+[148.920 -136.767]
+[153.961 -121.964]
+[148.260 -107.403]
+[134.508 -99.959]
+[131.669 -85.230]
+[128.830 -70.501]
+[125.991 -55.772]
+[123.153 -41.043]
+[120.665 -26.251]
+[118.530 -11.403]
+[116.750 3.491]
+[115.324 18.423]
+[113.898 33.355]
+[112.472 48.287]
+[111.046 63.219]
+[109.620 78.151]
+[120.593 87.923]
+[123.765 102.269]
+[117.935 115.756]
+[105.312 123.275]
+[103.886 138.207]
+[102.460 153.139]
+[101.034 168.071]
+[99.608 183.003]
+[98.182 197.935]
+[96.757 212.867]
+[103.147 227.340]
+[94.235 239.275]
+[105.333 250.292]
+[106.701 265.869]
+] def
+/pairs [
+[5 63]
+[7 61]
+[8 60]
+[9 59]
+[10 58]
+[11 57]
+[12 56]
+[13 55]
+[17 51]
+[18 50]
+[19 49]
+[20 48]
+[21 47]
+[22 46]
+[24 45]
+[25 44]
+[27 43]
+[28 42]
+[29 41]
+[30 40]
+[31 39]
+] def
+
+init
+
+% switch off outline pairs or bases by removing these lines
+drawoutline
+drawpairs
+drawbases
+% show it
+showpage
+end
+%%EOF

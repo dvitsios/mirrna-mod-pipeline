@@ -1,0 +1,119 @@
+## run example ##
+./modification_analysis.pl input_test/hsa-mir-320a_dataset.fa.gz out 0 hsa
+#--------------------
+
+# global indexing of miRNA positions:
+     5p-mod...{    mature miRNA   }...3p-mod
+         xxxxx|ooooooooooooooooooo|xxxxx     	 
+            -1 0123....        -10 1234
+
+# The available modification types are:
+1. no_mod
+2. nont_3p_PATTERN_INDEX     e.g. 'nont_3p_CACC_-3'
+3. nont_5p_PATTERN_INDEX                - " - 
+4. snp_PATTERN_SNP-INDEX     e.g. 'snp_3p_C_-2' 
+5. adar_PATTERN_ADAR-INDEX   e.g  'adar_5p_G_-1'
+6. internal_adar_G_INDEX     e.g. 'internal_adar_G_11'
+7. internal_snp_NT_INDEX          'internal_snp_A_6'  # there can be either only internal_adar or internal_snp, otherwise the miRNA is not recognized currently as a valid hit. 
+
+# extra post-identifiers:
+- 'doubled'		e.g. mmu-mir-143-3p=>nont_3p_U_1=>doubled
+In this case I should ignore the counts from these mirmod hits when I am quantifying for templated miRNAs expression.
+The reason is that these counts will be considered from the 'sister' miRNA hit that will have recorded the 5p modification
+for the same miRNA molecule.
+#! I should take care of that in my initial parsing process in the R analysis.
+
+
+Each modification type is separated by the '=>' separator from all the other modification types.
+Different formations of modification complexes are allowed, e.g.:
+'=>nont_3p_CACC_-3=>internal_snp_G_11'
+'=>no_mod=>internal_snp_A_6'
+'=>snp_3p_C_-2=>internal_adar_G_11'
+
+
+
+
+
+===========================================================================
+print "MIRNA\t";
+print "MODIFICATION_TYPE\t"; # - (for no_mod), mod (for nont), snp (for snp) or adar (for adar)
+print "MODIFICATION_ARM\t"; # 5p or 3p
+print "MODIFICATION_PATTERN\t"; # the modification sequence
+print "MODIFICATION_POSITION\t"; # an integer index, positive or negative
+
+print "INTERNAL_MOD_TYPE\t"; # - (if there is not), adar (for internal_adar) or snp (for internal_snp)
+print "INTERNAL_MOD_PATTERN\t";  # always 'G' for adar or any of the other 3 nts for SNPs. 
+print "INTERNAL_MOD_POSITION\t"; # an integer index, always positive.
+
+print "DOUBLED\t"; # yes/-: if yes, then ignore the counts from that hit in all cases that
+# don't refer to quantification between 5p and 3p 'mods' only. In global quantification events,
+# # I\ll be using the counts from the 5p mod equivalent hit.
+===========================================================================
+
+
+
+
+
+# Creating the file 'new2arms.counts': list with miRNAs that give a histo-mod profile with 2 arms, one of which has not been annotated in mirbase. 
+# sample:
+filename: input_test/mirs2arms/mirs_with_2_arms_NO_arm_info.fa.gz|      miRNA   reads   histo   modif
+>hsa-mir-448    1482    0 0 0 0 0 0 0 0 0 0 6 425 481 481 481 481 481 481 481 481 481 481 481 481 481 481 481 481 481 481 481 416 246 15 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 19 1001 1001 1001 1001 1001 1001 1001 1001 1001 1001 1001 1001 1001 1001 1001 1001 1001 1001 1001 987 439 96 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0     0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 35 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 481 155 102 20 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+>hsa-mir-764    1029    0 0 0 0 0 0 0 0 0 0 0 0 0 151 151 151 151 151 151 151 151 151 0 151 151 151 151 151 151 151 151 151 151 151 151 6 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 859 873 873 865 873 867 873 878 878 878 878 878 878 878 878 878 878 878 878 878 873 821 597 0 0 0 0 0 0 0 0 0 0 0     0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 151 0 0 0 0 0 0 0 0 0 0 0 0 8 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 5 0 10 0 0 0 0 0 0 0 0 0 0
+-total depth: 9346
+
+
+
+# Mirmod_pipeline specifications:
+# - Only 1 mismatch is permitted. If we have two, we don't get an alignment hit anyway.
+# [-] If I have 0 mismatches:
+# 	I should look for potential mismatches at the 5p and 3p stretch, if there are any stretches.
+# 	> For the 5p stretch:
+# 		start comparing (3' to 5' direction) the stretch with the part of the full miRNA sequence
+# 		that was not aligned. 
+# 		- If I have ONLY 1 mismatch in that stretch then keep this information either as:
+# 			* ADAR editing in that position, if we have G instead of the original A
+# 			* SNP in that position
+# 		- Else If I have > 1 mismatches
+# 			* 5p-modification
+#	> For the 3p stretch:
+#		start comparing (5' to 3' direction) the stretch with the part of the full miRNA sequence
+#		that was not aligned.
+#		- If I have ONLY 1 mismatch in that stretch then keep this information either as:
+#                       * ADAR editing in that position, if we have G instead of the original A
+#                       * SNP in that position
+#		- Else If I have > 1 mismatches
+#                       * 3p-modification
+# [-] If I have 1 mismatch:
+# 	# approach for the 1st version.
+# 	> Consider both 5p and 3p stretches as modifications 
+
+
+
+# Run: 
+# - 1/0 stands for run from my 'extended seqimp' pipeline / run from the command line
+# - $curTaxonName can be either Homo_sapiens or Mus_musculus at this stage 
+# - $scriptInput = "$curMirmodInputFolder/*.fa.gz";
+# - $scriptOutput = "$curMirmodInputFolder";
+./modification_analysis.pl $scriptInput $scriptOutput 0 $curTaxonName
+
+# create blastable database:
+makeblastdb -in mmu_hairpin_precursors.fa -dbtype nucl -title mmu_hairpin_precursors -out ./mmu_hairpin_precursors
+
+# Takes as input a set of CLEAN UNIQ files from the output directory of Kraken
+../../mirmod_pipeline/modification_analysis.pl *.fa.gz
+
+# Generates a table of miRNA edits from all samples for downstream R analysis
+
+# dvitsios:
+# *** COMMENTS FOR MY PIPELINE ***
+# The final output is stored at the following location:
+/nfs/research2/enright/dimitris/kraken_pipeline/seqimp-13-274/input/40674_FULL_DATASET/output
+# where '40674_FULL_DATASET' can be any other dataset folder!
+
+# This dir contains all dataset dirs that have been processed 
+# with a processed counts file for each file in each dataset.
+# All the processed counts within a dataset are later on merged
+# using an R script, the 'mergeCountsFiles.R' which is called inside
+# the main getAndProcessDataFromENA.pl script.
+
+

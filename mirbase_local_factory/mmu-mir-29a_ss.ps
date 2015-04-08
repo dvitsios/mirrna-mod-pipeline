@@ -1,0 +1,219 @@
+%!PS-Adobe-3.0 EPSF-3.0
+%%Creator: PS_dot.c,v 1.38 2007/02/02 15:18:13 ivo Exp $, ViennaRNA-1.8.3
+%%CreationDate: Tue Jun 10 17:21:40 2014
+%%Title: RNA Secondary Structure Plot
+%%BoundingBox: 66 210 518 662
+%%DocumentFonts: Helvetica
+%%Pages: 1
+%%EndComments
+
+%Options: 
+% to switch off outline pairs of sequence comment or
+% delete the appropriate line near the end of the file
+
+%%BeginProlog
+/RNAplot 100 dict def
+RNAplot begin
+/fsize  14 def
+/outlinecolor {0.2 setgray} bind def
+/paircolor    {0.2 setgray} bind def
+/seqcolor     {0   setgray} bind def
+/cshow  { dup stringwidth pop -2 div fsize -3 div rmoveto show} bind def
+/min { 2 copy gt { exch } if pop } bind def
+/max { 2 copy lt { exch } if pop } bind def
+/drawoutline {
+  gsave outlinecolor newpath
+  coor 0 get aload pop 0.8 0 360 arc % draw 5' circle of 1st sequence
+  currentdict /cutpoint known        % check if cutpoint is defined
+  {coor 0 cutpoint getinterval
+   {aload pop lineto} forall         % draw outline of 1st sequence
+   coor cutpoint get aload pop
+   2 copy moveto 0.8 0 360 arc       % draw 5' circle of 2nd sequence
+   coor cutpoint coor length cutpoint sub getinterval
+   {aload pop lineto} forall}        % draw outline of 2nd sequence
+  {coor {aload pop lineto} forall}   % draw outline as a whole
+  ifelse
+  stroke grestore
+} bind def
+/drawpairs {
+  paircolor
+  0.7 setlinewidth
+  [9 3.01] 9 setdash
+  newpath
+  pairs {aload pop
+     coor exch 1 sub get aload pop moveto
+     coor exch 1 sub get aload pop lineto
+  } forall
+  stroke
+} bind def
+% draw bases
+/drawbases {
+  [] 0 setdash
+  seqcolor
+  0
+  coor {
+    aload pop moveto
+    dup sequence exch 1 getinterval cshow
+    1 add
+  } forall
+  pop
+} bind def
+
+/init {
+  /Helvetica findfont fsize scalefont setfont
+  1 setlinejoin
+  1 setlinecap
+  0.8 setlinewidth
+  72 216 translate
+  % find the coordinate range
+  /xmax -1000 def /xmin 10000 def
+  /ymax -1000 def /ymin 10000 def
+  coor {
+      aload pop
+      dup ymin lt {dup /ymin exch def} if
+      dup ymax gt {/ymax exch def} {pop} ifelse
+      dup xmin lt {dup /xmin exch def} if
+      dup xmax gt {/xmax exch def} {pop} ifelse
+  } forall
+  /size {xmax xmin sub ymax ymin sub max} bind def
+  72 6 mul size div dup scale
+  size xmin sub xmax sub 2 div size ymin sub ymax sub 2 div
+  translate
+} bind def
+end
+%%EndProlog
+RNAplot begin
+% data start here
+/sequence (\
+ACCCCUUAGAGGAUGACUGAUUUCUUUUGGUGUUCAGAGUCAAUAGAAUUUUCUAGCACCAUCUGAAAUCGGUUAUAAUGAUUGGGGA\
+) def
+/coor [
+[86.454 433.788]
+[92.500 417.949]
+[92.500 402.949]
+[92.500 387.949]
+[92.500 372.949]
+[78.436 367.900]
+[66.927 358.326]
+[59.373 345.368]
+[56.703 330.579]
+[59.259 315.742]
+[66.751 302.651]
+[78.292 292.894]
+[92.500 287.665]
+[92.500 272.665]
+[92.500 257.665]
+[92.500 242.665]
+[92.500 227.665]
+[92.500 212.665]
+[92.500 197.665]
+[92.500 182.665]
+[92.500 167.665]
+[92.500 152.665]
+[92.500 137.665]
+[92.500 122.665]
+[80.648 113.980]
+[76.127 100.000]
+[80.648 86.020]
+[92.500 77.335]
+[92.500 62.335]
+[92.500 47.335]
+[92.500 32.335]
+[92.500 17.335]
+[92.500 2.335]
+[92.500 -12.665]
+[89.315 -21.470]
+[92.774 -28.192]
+[93.303 -43.182]
+[93.833 -58.173]
+[94.362 -73.164]
+[81.038 -80.695]
+[72.749 -93.562]
+[71.401 -108.808]
+[77.304 -122.929]
+[89.100 -132.682]
+[104.080 -135.823]
+[118.800 -131.633]
+[129.879 -121.073]
+[134.771 -106.570]
+[132.351 -91.457]
+[123.175 -79.207]
+[109.353 -72.634]
+[108.823 -57.644]
+[108.294 -42.653]
+[107.765 -27.662]
+[107.500 -12.665]
+[107.500 2.335]
+[107.500 17.335]
+[107.500 32.335]
+[107.500 47.335]
+[107.500 62.335]
+[107.500 77.335]
+[119.352 86.020]
+[123.873 100.000]
+[119.352 113.980]
+[107.500 122.665]
+[107.500 137.665]
+[107.500 152.665]
+[107.500 167.665]
+[107.500 182.665]
+[107.500 197.665]
+[107.500 212.665]
+[107.500 227.665]
+[107.500 242.665]
+[107.500 257.665]
+[107.500 272.665]
+[107.500 287.665]
+[121.708 292.894]
+[133.249 302.651]
+[140.741 315.742]
+[143.297 330.579]
+[140.627 345.368]
+[133.073 358.326]
+[121.564 367.900]
+[107.500 372.949]
+[107.500 387.949]
+[107.500 402.949]
+[107.500 417.949]
+[113.546 433.788]
+] def
+/pairs [
+[2 87]
+[3 86]
+[4 85]
+[5 84]
+[13 76]
+[14 75]
+[15 74]
+[16 73]
+[17 72]
+[18 71]
+[19 70]
+[20 69]
+[21 68]
+[22 67]
+[23 66]
+[24 65]
+[28 61]
+[29 60]
+[30 59]
+[31 58]
+[32 57]
+[33 56]
+[34 55]
+[36 54]
+[37 53]
+[38 52]
+[39 51]
+] def
+
+init
+
+% switch off outline pairs or bases by removing these lines
+drawoutline
+drawpairs
+drawbases
+% show it
+showpage
+end
+%%EOF

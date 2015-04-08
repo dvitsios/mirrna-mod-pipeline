@@ -1,0 +1,193 @@
+%!PS-Adobe-3.0 EPSF-3.0
+%%Creator: PS_dot.c,v 1.38 2007/02/02 15:18:13 ivo Exp $, ViennaRNA-1.8.3
+%%CreationDate: Tue Jun 10 17:21:54 2014
+%%Title: RNA Secondary Structure Plot
+%%BoundingBox: 66 210 518 662
+%%DocumentFonts: Helvetica
+%%Pages: 1
+%%EndComments
+
+%Options: 
+% to switch off outline pairs of sequence comment or
+% delete the appropriate line near the end of the file
+
+%%BeginProlog
+/RNAplot 100 dict def
+RNAplot begin
+/fsize  14 def
+/outlinecolor {0.2 setgray} bind def
+/paircolor    {0.2 setgray} bind def
+/seqcolor     {0   setgray} bind def
+/cshow  { dup stringwidth pop -2 div fsize -3 div rmoveto show} bind def
+/min { 2 copy gt { exch } if pop } bind def
+/max { 2 copy lt { exch } if pop } bind def
+/drawoutline {
+  gsave outlinecolor newpath
+  coor 0 get aload pop 0.8 0 360 arc % draw 5' circle of 1st sequence
+  currentdict /cutpoint known        % check if cutpoint is defined
+  {coor 0 cutpoint getinterval
+   {aload pop lineto} forall         % draw outline of 1st sequence
+   coor cutpoint get aload pop
+   2 copy moveto 0.8 0 360 arc       % draw 5' circle of 2nd sequence
+   coor cutpoint coor length cutpoint sub getinterval
+   {aload pop lineto} forall}        % draw outline of 2nd sequence
+  {coor {aload pop lineto} forall}   % draw outline as a whole
+  ifelse
+  stroke grestore
+} bind def
+/drawpairs {
+  paircolor
+  0.7 setlinewidth
+  [9 3.01] 9 setdash
+  newpath
+  pairs {aload pop
+     coor exch 1 sub get aload pop moveto
+     coor exch 1 sub get aload pop lineto
+  } forall
+  stroke
+} bind def
+% draw bases
+/drawbases {
+  [] 0 setdash
+  seqcolor
+  0
+  coor {
+    aload pop moveto
+    dup sequence exch 1 getinterval cshow
+    1 add
+  } forall
+  pop
+} bind def
+
+/init {
+  /Helvetica findfont fsize scalefont setfont
+  1 setlinejoin
+  1 setlinecap
+  0.8 setlinewidth
+  72 216 translate
+  % find the coordinate range
+  /xmax -1000 def /xmin 10000 def
+  /ymax -1000 def /ymin 10000 def
+  coor {
+      aload pop
+      dup ymin lt {dup /ymin exch def} if
+      dup ymax gt {/ymax exch def} {pop} ifelse
+      dup xmin lt {dup /xmin exch def} if
+      dup xmax gt {/xmax exch def} {pop} ifelse
+  } forall
+  /size {xmax xmin sub ymax ymin sub max} bind def
+  72 6 mul size div dup scale
+  size xmin sub xmax sub 2 div size ymin sub ymax sub 2 div
+  translate
+} bind def
+end
+%%EndProlog
+RNAplot begin
+% data start here
+/sequence (\
+UUUGACUGAGAGGUAAGGAAUGAGUUAUACUGUGUUACUCAUUCCUUACCUCACCGUCAAAGGA\
+) def
+/coor [
+[109.012 213.621]
+[106.844 198.779]
+[104.677 183.936]
+[102.510 169.093]
+[100.342 154.251]
+[98.175 139.408]
+[88.680 127.932]
+[94.342 113.159]
+[85.826 102.070]
+[90.815 89.008]
+[88.648 74.166]
+[86.481 59.323]
+[84.313 44.480]
+[82.146 29.638]
+[79.979 14.795]
+[77.811 -0.047]
+[75.644 -14.890]
+[73.477 -29.733]
+[71.309 -44.575]
+[69.142 -59.418]
+[66.975 -74.260]
+[64.807 -89.103]
+[62.640 -103.946]
+[60.473 -118.788]
+[58.305 -133.631]
+[48.655 -146.168]
+[54.472 -159.880]
+[52.305 -174.722]
+[40.352 -185.423]
+[41.409 -201.431]
+[54.665 -210.467]
+[69.952 -205.599]
+[75.542 -190.561]
+[67.148 -176.890]
+[69.315 -162.047]
+[78.810 -150.571]
+[73.148 -135.798]
+[75.315 -120.955]
+[77.483 -106.113]
+[79.650 -91.270]
+[81.817 -76.428]
+[83.985 -61.585]
+[86.152 -46.742]
+[88.319 -31.900]
+[90.487 -17.057]
+[92.654 -2.215]
+[94.821 12.628]
+[96.989 27.471]
+[99.156 42.313]
+[101.323 57.156]
+[103.491 71.998]
+[105.658 86.841]
+[114.174 97.930]
+[109.185 110.992]
+[118.835 123.529]
+[113.017 137.241]
+[115.185 152.083]
+[117.352 166.926]
+[119.520 181.769]
+[121.687 196.611]
+[123.854 211.454]
+[134.439 223.980]
+[128.630 239.315]
+[112.402 241.685]
+] def
+/pairs [
+[1 61]
+[2 60]
+[3 59]
+[4 58]
+[5 57]
+[6 56]
+[8 54]
+[10 52]
+[11 51]
+[12 50]
+[13 49]
+[14 48]
+[15 47]
+[16 46]
+[17 45]
+[18 44]
+[19 43]
+[20 42]
+[21 41]
+[22 40]
+[23 39]
+[24 38]
+[25 37]
+[27 35]
+[28 34]
+] def
+
+init
+
+% switch off outline pairs or bases by removing these lines
+drawoutline
+drawpairs
+drawbases
+% show it
+showpage
+end
+%%EOF

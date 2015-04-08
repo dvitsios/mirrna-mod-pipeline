@@ -1,0 +1,5 @@
+# Create blastable database for species e.g. 'mmu':
+makeblastdb -in mmu.fasta -dbtype nucl -title mmu.fasta -out ./mmu.fasta
+makeblastdb -in hsa.fasta -dbtype nucl -title hsa.fasta -out ./hsa.fasta
+
+# NOTE: a 'mmu.fa.folds' file must be created apart from the blastable database
