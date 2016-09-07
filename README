@@ -18,10 +18,10 @@
 
 # extra post-identifiers:
 - 'doubled'		e.g. mmu-mir-143-3p=>nont_3p_U_1=>doubled
-In this case I should ignore the counts from these mirmod hits when I am quantifying for templated miRNAs expression.
+Ignore the counts from these mirmod hits when quantifying for templated miRNAs expression.
 The reason is that these counts will be considered from the 'sister' miRNA hit that will have recorded the 5p modification
 for the same miRNA molecule.
-#! I should take care of that in my initial parsing process in the R analysis.
+#! Should take care of that in the initial parsing process in the R analysis.
 
 
 Each modification type is separated by the '=>' separator from all the other modification types.
@@ -49,17 +49,6 @@ print "DOUBLED\t"; # yes/-: if yes, then ignore the counts from that hit in all 
 # don't refer to quantification between 5p and 3p 'mods' only. In global quantification events,
 # # I\ll be using the counts from the 5p mod equivalent hit.
 ===========================================================================
-
-
-
-
-
-# Creating the file 'new2arms.counts': list with miRNAs that give a histo-mod profile with 2 arms, one of which has not been annotated in mirbase. 
-# sample:
-filename: input_test/mirs2arms/mirs_with_2_arms_NO_arm_info.fa.gz|      miRNA   reads   histo   modif
->hsa-mir-448    1482    0 0 0 0 0 0 0 0 0 0 6 425 481 481 481 481 481 481 481 481 481 481 481 481 481 481 481 481 481 481 481 416 246 15 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 19 1001 1001 1001 1001 1001 1001 1001 1001 1001 1001 1001 1001 1001 1001 1001 1001 1001 1001 1001 987 439 96 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0     0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 35 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 481 155 102 20 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
->hsa-mir-764    1029    0 0 0 0 0 0 0 0 0 0 0 0 0 151 151 151 151 151 151 151 151 151 0 151 151 151 151 151 151 151 151 151 151 151 151 6 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 859 873 873 865 873 867 873 878 878 878 878 878 878 878 878 878 878 878 878 878 873 821 597 0 0 0 0 0 0 0 0 0 0 0     0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 151 0 0 0 0 0 0 0 0 0 0 0 0 8 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 6 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 5 0 10 0 0 0 0 0 0 0 0 0 0
--total depth: 9346
 
 
 
@@ -105,12 +94,8 @@ makeblastdb -in mmu_hairpin_precursors.fa -dbtype nucl -title mmu_hairpin_precur
 # Generates a table of miRNA edits from all samples for downstream R analysis
 
 # dvitsios:
-# *** COMMENTS FOR MY PIPELINE ***
-# The final output is stored at the following location:
-/nfs/research2/enright/dimitris/kraken_pipeline/seqimp-13-274/input/40674_FULL_DATASET/output
-# where '40674_FULL_DATASET' can be any other dataset folder!
-
-# This dir contains all dataset dirs that have been processed 
+# *** COMMENTS FOR THE PIPELINE ***
+# The final output dir contains all dataset dirs that have been processed 
 # with a processed counts file for each file in each dataset.
 # All the processed counts within a dataset are later on merged
 # using an R script, the 'mergeCountsFiles.R' which is called inside
