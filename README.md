@@ -1,4 +1,4 @@
-### H3
+###
 This work is Chimira's predecessor.
 You can find the relase version of Chimira here:
 
@@ -56,7 +56,7 @@ print "DOUBLED\t"; # yes/-: if yes, then ignore the counts from that hit in all 
 ```
 
 
-### H3
+###
 Mirmod_pipeline specifications:
  - Only 1 mismatch is permitted. If we have two, we don't get an alignment hit anyway.
  [-] If I have 0 mismatches:
@@ -83,7 +83,7 @@ Mirmod_pipeline specifications:
 
 
 
-#### H4 
+####
 Run: 
  - 1/0 stands for run from my 'extended seqimp' pipeline / run from the command line
  - $curTaxonName can be either Homo_sapiens or Mus_musculus at this stage 
@@ -91,15 +91,15 @@ Run:
  - $scriptOutput = "$curMirmodInputFolder";
 ./modification_analysis.pl $scriptInput $scriptOutput 0 $curTaxonName
 
-#### H4 create blastable database:
+#### create blastable database:
 makeblastdb -in mmu_hairpin_precursors.fa -dbtype nucl -title mmu_hairpin_precursors -out ./mmu_hairpin_precursors
 
-#### H4 Takes as input a set of CLEAN UNIQ files from the output directory of Kraken
+#### Takes as input a set of CLEAN UNIQ files from the output directory of Kraken
 ../../mirmod_pipeline/modification_analysis.pl *.fa.gz
 
 - Generates a table of miRNA edits from all samples for downstream R analysis
 
-#### H4 dvitsios:
+#### dvitsios:
 *** COMMENTS FOR THE PIPELINE ***
 The final output dir contains all dataset dirs that have been processed 
 with a processed counts file for each file in each dataset.
