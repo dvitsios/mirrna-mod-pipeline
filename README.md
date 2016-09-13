@@ -4,16 +4,16 @@ You can find the relase version of Chimira here:
 
 [http://wwwdev.ebi.ac.uk/enright-dev/chimira/index.php](http://wwwdev.ebi.ac.uk/enright-dev/chimira/index.php)
 
-## run example ##
+## Run example ##
 ./modification_analysis.pl input_test/hsa-mir-320a_dataset.fa.gz out 0 hsa
 #--------------------
 
-# global indexing of miRNA positions:
+## global indexing of miRNA positions:
      5p-mod...{    mature miRNA   }...3p-mod
          xxxxx|ooooooooooooooooooo|xxxxx     	 
             -1 0123....        -10 1234
 
-# The available modification types are:
+## The available modification types are:
 1. no_mod
 2. nont_3p_PATTERN_INDEX     e.g. 'nont_3p_CACC_-3'
 3. nont_5p_PATTERN_INDEX                - " - 
@@ -22,7 +22,7 @@ You can find the relase version of Chimira here:
 6. internal_adar_G_INDEX     e.g. 'internal_adar_G_11'
 7. internal_snp_NT_INDEX          'internal_snp_A_6'  # there can be either only internal_adar or internal_snp, otherwise the miRNA is not recognized currently as a valid hit. 
 
-# extra post-identifiers:
+## extra post-identifiers:
 - 'doubled'		e.g. mmu-mir-143-3p=>nont_3p_U_1=>doubled
 Ignore the counts from these mirmod hits when quantifying for templated miRNAs expression.
 The reason is that these counts will be considered from the 'sister' miRNA hit that will have recorded the 5p modification
@@ -101,6 +101,7 @@ makeblastdb -in mmu_hairpin_precursors.fa -dbtype nucl -title mmu_hairpin_precur
 
 #### dvitsios:
 *** COMMENTS FOR THE PIPELINE ***
+
 The final output dir contains all dataset dirs that have been processed 
 with a processed counts file for each file in each dataset.
 All the processed counts within a dataset are later on merged
