@@ -39,8 +39,7 @@ Different formations of modification complexes are allowed, e.g.:
 
 
 
-
-===========================================================================
+```perl
 print "MIRNA\t";
 print "MODIFICATION_TYPE\t"; # - (for no_mod), mod (for nont), snp (for snp) or adar (for adar)
 print "MODIFICATION_ARM\t"; # 5p or 3p
@@ -54,57 +53,58 @@ print "INTERNAL_MOD_POSITION\t"; # an integer index, always positive.
 print "DOUBLED\t"; # yes/-: if yes, then ignore the counts from that hit in all cases that
 # don't refer to quantification between 5p and 3p 'mods' only. In global quantification events,
 # # I\ll be using the counts from the 5p mod equivalent hit.
-===========================================================================
+```
+
+
+### H3
+Mirmod_pipeline specifications:
+ - Only 1 mismatch is permitted. If we have two, we don't get an alignment hit anyway.
+ [-] If I have 0 mismatches:
+ 	I should look for potential mismatches at the 5p and 3p stretch, if there are any stretches.
+ 	> For the 5p stretch:
+ 		start comparing (3' to 5' direction) the stretch with the part of the full miRNA sequence
+ 		that was not aligned. 
+ 		- If I have ONLY 1 mismatch in that stretch then keep this information either as:
+ 			* ADAR editing in that position, if we have G instead of the original A
+ 			* SNP in that position
+ 		- Else If I have > 1 mismatches
+ 			* 5p-modification
+	> For the 3p stretch:
+		start comparing (5' to 3' direction) the stretch with the part of the full miRNA sequence
+		that was not aligned.
+		- If I have ONLY 1 mismatch in that stretch then keep this information either as:
+                       * ADAR editing in that position, if we have G instead of the original A
+                       * SNP in that position
+		- Else If I have > 1 mismatches
+                       * 3p-modification
+ [-] If I have 1 mismatch:
+ 	(comment): approach for the 1st version.
+ 	> Consider both 5p and 3p stretches as modifications 
 
 
 
-# Mirmod_pipeline specifications:
-# - Only 1 mismatch is permitted. If we have two, we don't get an alignment hit anyway.
-# [-] If I have 0 mismatches:
-# 	I should look for potential mismatches at the 5p and 3p stretch, if there are any stretches.
-# 	> For the 5p stretch:
-# 		start comparing (3' to 5' direction) the stretch with the part of the full miRNA sequence
-# 		that was not aligned. 
-# 		- If I have ONLY 1 mismatch in that stretch then keep this information either as:
-# 			* ADAR editing in that position, if we have G instead of the original A
-# 			* SNP in that position
-# 		- Else If I have > 1 mismatches
-# 			* 5p-modification
-#	> For the 3p stretch:
-#		start comparing (5' to 3' direction) the stretch with the part of the full miRNA sequence
-#		that was not aligned.
-#		- If I have ONLY 1 mismatch in that stretch then keep this information either as:
-#                       * ADAR editing in that position, if we have G instead of the original A
-#                       * SNP in that position
-#		- Else If I have > 1 mismatches
-#                       * 3p-modification
-# [-] If I have 1 mismatch:
-# 	# approach for the 1st version.
-# 	> Consider both 5p and 3p stretches as modifications 
-
-
-
-# Run: 
-# - 1/0 stands for run from my 'extended seqimp' pipeline / run from the command line
-# - $curTaxonName can be either Homo_sapiens or Mus_musculus at this stage 
-# - $scriptInput = "$curMirmodInputFolder/*.fa.gz";
-# - $scriptOutput = "$curMirmodInputFolder";
+#### H4 
+Run: 
+ - 1/0 stands for run from my 'extended seqimp' pipeline / run from the command line
+ - $curTaxonName can be either Homo_sapiens or Mus_musculus at this stage 
+ - $scriptInput = "$curMirmodInputFolder/*.fa.gz";
+ - $scriptOutput = "$curMirmodInputFolder";
 ./modification_analysis.pl $scriptInput $scriptOutput 0 $curTaxonName
 
-# create blastable database:
+#### H4 create blastable database:
 makeblastdb -in mmu_hairpin_precursors.fa -dbtype nucl -title mmu_hairpin_precursors -out ./mmu_hairpin_precursors
 
-# Takes as input a set of CLEAN UNIQ files from the output directory of Kraken
+#### H4 Takes as input a set of CLEAN UNIQ files from the output directory of Kraken
 ../../mirmod_pipeline/modification_analysis.pl *.fa.gz
 
-# Generates a table of miRNA edits from all samples for downstream R analysis
+- Generates a table of miRNA edits from all samples for downstream R analysis
 
-# dvitsios:
-# *** COMMENTS FOR THE PIPELINE ***
-# The final output dir contains all dataset dirs that have been processed 
-# with a processed counts file for each file in each dataset.
-# All the processed counts within a dataset are later on merged
-# using an R script, the 'mergeCountsFiles.R' which is called inside
-# the main getAndProcessDataFromENA.pl script.
+#### H4 dvitsios:
+*** COMMENTS FOR THE PIPELINE ***
+The final output dir contains all dataset dirs that have been processed 
+with a processed counts file for each file in each dataset.
+All the processed counts within a dataset are later on merged
+using an R script, the 'mergeCountsFiles.R' which is called inside
+the main getAndProcessDataFromENA.pl script.
 
 
