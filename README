@@ -1,3 +1,8 @@
+This work is Chimira's predecessor.
+You can find the relase version of Chimira here:
+
+<a href='wwwdev.ebi.ac.uk/enright-dev/chimira/index.php'>wwwdev.ebi.ac.uk/enright-dev/chimira/index.php</a>
+
 ## run example ##
 ./modification_analysis.pl input_test/hsa-mir-320a_dataset.fa.gz out 0 hsa
 #--------------------
