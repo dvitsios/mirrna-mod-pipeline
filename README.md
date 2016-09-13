@@ -101,8 +101,7 @@ makeblastdb -in mmu_hairpin_precursors.fa -dbtype nucl -title mmu_hairpin_precur
 
 - Generates a table of miRNA edits from all samples for downstream R analysis
 
-#### dvitsios:
-*** COMMENTS FOR THE PIPELINE ***
+#### dvitsios - COMMENTS FOR THE PIPELINE:
 
 The final output dir contains all dataset dirs that have been processed 
 with a processed counts file for each file in each dataset.
