@@ -59,6 +59,7 @@ print "DOUBLED\t"; # yes/-: if yes, then ignore the counts from that hit in all 
 
 ###
 Mirmod_pipeline specifications:
+```
  - Only 1 mismatch is permitted. If we have two, we don't get an alignment hit anyway.
  [-] If I have 0 mismatches:
  	I should look for potential mismatches at the 5p and 3p stretch, if there are any stretches.
@@ -81,7 +82,7 @@ Mirmod_pipeline specifications:
  [-] If I have 1 mismatch:
  	(comment): approach for the 1st version.
  	> Consider both 5p and 3p stretches as modifications 
-
+```
 
 
 ####
