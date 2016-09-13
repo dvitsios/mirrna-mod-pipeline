@@ -6,7 +6,8 @@ You can find the relase version of Chimira here:
 
 ## Run example ##
 ./modification_analysis.pl input_test/hsa-mir-320a_dataset.fa.gz out 0 hsa
-#--------------------
+####
+--------------------
 
 ## global indexing of miRNA positions:
      5p-mod...{    mature miRNA   }...3p-mod
