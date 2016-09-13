@@ -1,6 +1,6 @@
 ###
 This work is Chimira's predecessor.
-You can find the relase version of Chimira here:
+You can find the release version of Chimira here:
 
 [http://wwwdev.ebi.ac.uk/enright-dev/chimira/index.php](http://wwwdev.ebi.ac.uk/enright-dev/chimira/index.php)
 
